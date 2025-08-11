@@ -5,12 +5,21 @@ using TMPro;
 
 public class TwoDiceRoller : MonoBehaviour
 {
+
+    [Header("Camera Shake")]
+    public SmoothFollow cameraFollow;        
+    public float camShakeDuration = 0.25f;
+    public float camShakeMagnitude = 0.35f;
+    public float camShakeFrequency = 28f;
+
     [Header("References")]
     public Transform dice1;
     public Transform dice2;
     public Button goButton;
     public TextMeshProUGUI resultText; // optional
     public Camera viewCamera;          // leave null -> Camera.main
+    public PlayerTokenMover player; // assign in Inspector
+
 
     [Header("Durations")]
     public float moveDuration = 1.0f;   // total move time
@@ -81,6 +90,13 @@ public class TwoDiceRoller : MonoBehaviour
     {
         if (busy || !dice1 || !dice2) return;
         if (!viewCamera) viewCamera = Camera.main;
+
+        // Shake camera immediately on Go
+        if (!cameraFollow && Camera.main)
+            cameraFollow = Camera.main.GetComponent<SmoothFollow>();
+        if (cameraFollow)
+            cameraFollow.Shake(camShakeDuration, camShakeMagnitude, camShakeFrequency);
+
         StartCoroutine(RollMoveToScreenCenter_TwoBounces());
     }
 
@@ -216,6 +232,10 @@ public class TwoDiceRoller : MonoBehaviour
         dice2.rotation = target2Rot;
 
         if (resultText) resultText.text = (face1 + face2).ToString();
+
+        //Move Player Here
+        int total = face1 + face2;
+        if (player) player.MoveSteps(total);
 
         busy = false;
         if (goButton) goButton.interactable = true;
