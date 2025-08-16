@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scene/Car Selection Menu.unity
+    guid: a0e371320f89bc84c9677813b522c62f
+  - enabled: 1
     path: Assets/Scene/Level 1.unity
     guid: 096ac6059bbcc09409dac57ce59725c2
-  - enabled: 1
-    path: Assets/VisionarySpaces/RunnerSet/RunnerDemoScene.unity
-    guid: e5b3402215057df4c8135f502429c989
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
