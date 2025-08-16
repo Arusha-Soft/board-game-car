@@ -238,7 +238,7 @@ public class TwoDiceRoller : MonoBehaviour
         if (player) player.MoveSteps(total);
 
         busy = false;
-        if (goButton) goButton.interactable = true;
+        //if (goButton) goButton.interactable = true;   // Enable this Thruhh Player Code
     }
 
     // ===== Helpers =====
