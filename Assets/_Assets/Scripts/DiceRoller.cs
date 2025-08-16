@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class TwoDiceRoller : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class TwoDiceRoller : MonoBehaviour
     public Button goButton;
     public TextMeshProUGUI resultText; // optional
     public Camera viewCamera;          // leave null -> Camera.main
-    public PlayerTokenMover player; // assign in Inspector
+    [SerializeField] private PlayerTokenMover player; 
 
 
     [Header("Durations")]
@@ -60,6 +61,14 @@ public class TwoDiceRoller : MonoBehaviour
     float dice1RadiusXZ, dice2RadiusXZ;
     bool busy;
 
+    private void OnEnable()
+    {
+        CarSpawner.onCarNumber += SetPlayer;
+    }
+    private void OnDisable()
+    {
+        CarSpawner.onCarNumber -= SetPlayer;
+    }
     void Awake()
     {
         if (goButton) goButton.onClick.AddListener(OnGoClicked);
@@ -73,6 +82,10 @@ public class TwoDiceRoller : MonoBehaviour
 
         dice1RadiusXZ = GetDiceXZRadius(dice1);
         dice2RadiusXZ = GetDiceXZRadius(dice2);
+    }
+    private void SetPlayer(GameObject currentPlayer)
+    {
+        player = currentPlayer.GetComponent<PlayerTokenMover>();
     }
 
     void OnDestroy()

@@ -4,9 +4,10 @@ using System.Collections;
 public class SmoothFollow : MonoBehaviour
 {
     [Header("Follow Settings")]
-    public Transform target;
+    private Transform target;
     public float smoothSpeed = 5f;
 
+    bool isCarSet;
     Vector3 offset;
 
     // --- shake support ---
@@ -15,17 +16,28 @@ public class SmoothFollow : MonoBehaviour
 
     void Start()
     {
-        if (target == null)
-        {
-            Debug.LogError("SmoothFollow: No target assigned!");
-            enabled = false;
-            return;
-        }
+        //if (target == null)
+        //{
+        //    Debug.LogError("SmoothFollow: No target assigned!");
+        //    enabled = false;
+        //    return;
+        //}
+
+        //offset = transform.position - target.position;
+    }
+
+    void SetCamera(GameObject currentcar)
+    {
+        target = currentcar.transform;
         offset = transform.position - target.position;
+        isCarSet = true;
     }
 
     void LateUpdate()
     {
+        if (!isCarSet)
+            return;
+
         // Desired position + shake offset (applied in world space)
         Vector3 desiredPosition = target.position + offset + shakeOffset;
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
@@ -54,7 +66,7 @@ public class SmoothFollow : MonoBehaviour
 
             Vector3 local = new Vector3(nx, ny, 0f) * (magnitude * damper);
 
-            // convert to world using camera’s current right/up
+            // convert to world using cameraï¿½s current right/up
             shakeOffset = transform.right * local.x + transform.up * local.y;
 
             t += Time.deltaTime;
@@ -63,5 +75,15 @@ public class SmoothFollow : MonoBehaviour
 
         shakeOffset = Vector3.zero;
         shakeRoutine = null;
+    }
+
+    private void OnEnable()
+    {
+        CarSpawner.onCarNumber += SetCamera;
+    }
+
+    private void OnDisable()
+    {
+        CarSpawner.onCarNumber -= SetCamera;
     }
 }
