@@ -1,0 +1,5 @@
+This asset uses Lilita One font, which comes under Open Font License.
+You can find the license either in OFL.txt or on website:
+https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
+More details about the font can be found here:
+https://fonts.google.com/specimen/Lilita+One/about
